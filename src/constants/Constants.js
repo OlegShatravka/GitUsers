@@ -1,0 +1,2 @@
+export const USERS_PER_PAGE_QUANTITY = 30;
+export const FOLLOWERS_PER_PAGE_QUANTITY = 10;
