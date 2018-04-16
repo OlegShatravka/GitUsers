@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   error: '',
   followersUrl: '',
   page: 0,
-  allFollowersLoaded: false
+  allFollowersLoaded: false,
+  showLoadMoreFollowersSpinner: false
 };
 
 export default (state = INITIAL_STATE, action) => {

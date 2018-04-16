@@ -35,7 +35,7 @@ class FollowersList extends Component {
 
   render() {
     const { container } = styles;
-    const { loading, error, followers } = this.props;
+    const { loading, error, followers, showLoadMoreFollowersSpinner } = this.props;
 
     if (loading) {
       return <Spinner />;
@@ -55,7 +55,7 @@ class FollowersList extends Component {
             onEndReachedThreshold={0.5}
             onEndReached={() => this.onEndReached()}
           />
-          <LoadMoreSpinner visible={this.props.showLoadMoreFollowersSpinner} />
+          <LoadMoreSpinner visible={showLoadMoreFollowersSpinner} />
         </View>
       );
     }

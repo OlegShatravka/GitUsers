@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet, Text } from 'react-native';
 
 const Error = ({ message }) => (
@@ -6,6 +7,10 @@ const Error = ({ message }) => (
     <Text>{message}</Text>
   </View>
 );
+
+Error.propTypes = {
+  message: PropTypes.string.isRequired
+};
 
 const styles = StyleSheet.create({
   container: {

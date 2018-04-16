@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 
 const Spinner = ({ size = 'large' }) => (
@@ -6,6 +7,10 @@ const Spinner = ({ size = 'large' }) => (
     <ActivityIndicator size={size} />
   </View>
 );
+
+Spinner.propTypes = {
+  optionalUnion: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+};
 
 const styles = StyleSheet.create({
   container: {
