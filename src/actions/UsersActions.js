@@ -5,6 +5,7 @@ import {
   LOAD_USERS_SUCCESS,
   LOAD_USERS_FAIL,
   ALL_USERS_LOADED,
+  LOAD_MORE_USERS,
   USERS_PER_PAGE_QUANTITY
 } from '../constants';
 
@@ -13,9 +14,9 @@ export const loadUsers = () => dispatch => {
   axios
     .get(`https://api.github.com/users?per_page=${USERS_PER_PAGE_QUANTITY}`)
     .then(response => {
-      loadUsersSuccess(dispatch, response.data);
+      loadUsersSuccess(dispatch, { users: response.data });
     })
-    .catch(error => loadUsersFail(dispatch, error));
+    .catch(error => loadUsersFail(dispatch, { error }));
 };
 
 const loadUsersSuccess = (dispatch, users) => {
@@ -39,16 +40,17 @@ const allUsersLoaded = dispatch => {
 };
 
 export const loadMoreUsers = () => (dispatch, getState) => {
+  dispatch({ type: LOAD_MORE_USERS });
   const { users } = getState().users;
   const since = users[users.length - 1].id;
   axios
     .get(`https://api.github.com/users?since=${since}&per_page=${USERS_PER_PAGE_QUANTITY}`)
     .then(response => {
       if (response.data.length) {
-        loadUsersSuccess(dispatch, response.data);
+        loadUsersSuccess(dispatch, { users: response.data });
       } else {
         allUsersLoaded(dispatch);
       }
     })
-    .catch(error => loadUsersFail(dispatch, error));
+    .catch(error => loadUsersFail(dispatch, { error }));
 };

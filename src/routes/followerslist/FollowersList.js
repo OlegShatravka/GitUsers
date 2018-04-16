@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { loadFollowers, loadMoreFollowers, resetFollowers } from '../../actions';
-import { Spinner, Error, ListItem } from '../../components/common';
+import { Spinner, LoadMoreSpinner, Error, ListItem } from '../../components/common';
 
 class FollowersList extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -55,6 +55,7 @@ class FollowersList extends Component {
             onEndReachedThreshold={0.5}
             onEndReached={() => this.onEndReached()}
           />
+          <LoadMoreSpinner visible={this.props.showLoadMoreFollowersSpinner} />
         </View>
       );
     }
@@ -74,8 +75,14 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  const { followers, loading, error, allFollowersLoaded } = state.followers;
-  return { followers, loading, error, allFollowersLoaded };
+  const {
+    followers,
+    loading,
+    error,
+    allFollowersLoaded,
+    showLoadMoreFollowersSpinner
+  } = state.followers;
+  return { followers, loading, error, allFollowersLoaded, showLoadMoreFollowersSpinner };
 };
 
 export default connect(mapStateToProps, { loadFollowers, loadMoreFollowers, resetFollowers })(

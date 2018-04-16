@@ -6,17 +6,18 @@ import {
   LOAD_FOLLOWERS_FAIL,
   RESET_FOLLOWERS,
   ALL_FOLLOWERS_LOADED,
+  LOAD_MORE_FOLLOWERS,
   FOLLOWERS_PER_PAGE_QUANTITY
 } from '../constants';
 
 export const loadFollowers = ({ followersUrl }) => dispatch => {
-  dispatch({ type: LOAD_FOLLOWERS, payload: followersUrl });
+  dispatch({ type: LOAD_FOLLOWERS, payload: { followersUrl } });
   axios
     .get(`${followersUrl}?per_page=${FOLLOWERS_PER_PAGE_QUANTITY}`)
     .then(response => {
       loadFollowersSuccess(dispatch, { followers: response.data, page: 1 });
     })
-    .catch(error => loadFollowersFail(dispatch, error));
+    .catch(error => loadFollowersFail(dispatch, { error }));
 };
 
 const loadFollowersSuccess = (dispatch, user) => {
@@ -26,9 +27,10 @@ const loadFollowersSuccess = (dispatch, user) => {
   });
 };
 
-const loadFollowersFail = dispatch => {
+const loadFollowersFail = (dispatch, error) => {
   dispatch({
-    type: LOAD_FOLLOWERS_FAIL
+    type: LOAD_FOLLOWERS_FAIL,
+    payload: error
   });
 };
 
@@ -39,6 +41,7 @@ const allFollowersLoaded = dispatch => {
 };
 
 export const loadMoreFollowers = () => (dispatch, getState) => {
+  dispatch({ type: LOAD_MORE_FOLLOWERS });
   const { followersUrl, page } = getState().followers;
   const pageToLoad = page + 1;
   axios
@@ -50,7 +53,7 @@ export const loadMoreFollowers = () => (dispatch, getState) => {
         allFollowersLoaded(dispatch);
       }
     })
-    .catch(error => loadFollowersFail(dispatch, error));
+    .catch(error => loadFollowersFail(dispatch, { error }));
 };
 
 export function resetFollowers() {

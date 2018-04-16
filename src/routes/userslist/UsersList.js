@@ -3,7 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 
 import { loadUsers, loadMoreUsers } from '../../actions';
-import { Spinner, Error, ListItem } from '../../components/common';
+import { Spinner, LoadMoreSpinner, Error, ListItem } from '../../components/common';
 
 class UsersList extends Component {
   componentWillMount() {
@@ -27,7 +27,7 @@ class UsersList extends Component {
   render() {
     const { container } = styles;
 
-    const { loading, error, users } = this.props;
+    const { loading, error, users, showLoadMoreUsersSpinner } = this.props;
 
     if (loading) {
       return <Spinner />;
@@ -47,6 +47,7 @@ class UsersList extends Component {
             onEndReachedThreshold={0.5}
             onEndReached={() => this.onEndReached()}
           />
+          <LoadMoreSpinner visible={showLoadMoreUsersSpinner} />
         </View>
       );
     }
@@ -66,8 +67,8 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
-  const { users, loading, error, allUsersLoaded } = state.users;
-  return { users, loading, error, allUsersLoaded };
+  const { users, loading, error, allUsersLoaded, showLoadMoreUsersSpinner } = state.users;
+  return { users, loading, error, allUsersLoaded, showLoadMoreUsersSpinner };
 };
 
 export default connect(mapStateToProps, { loadUsers, loadMoreUsers })(UsersList);
